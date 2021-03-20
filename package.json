@@ -1,0 +1,25 @@
+{
+  "name": "delivery-service",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fanich37/netology-delivery-service.git"
+  },
+  "author": "Andrey Alexandrov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fanich37/netology-delivery-service/issues"
+  },
+  "homepage": "https://github.com/fanich37/netology-delivery-service#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.22.0",
+    "nodemon": "^2.0.7"
+  }
+}
