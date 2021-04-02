@@ -1,0 +1,16 @@
+<div class="field">
+  <label class="label">{{label}}{{#if required}} *{{/if}}</label>
+  <div class="control">
+    <input
+      class="input"
+      name="{{name}}"
+      type="{{type}}"
+      placeholder="{{placeholder}}"
+      value="{{value}}"
+    >
+  </div>
+
+  {{#if error}}
+  <p class="help is-danger">{{error}}</p>
+  {{/if}}
+</div>

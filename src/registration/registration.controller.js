@@ -1,23 +1,34 @@
 const { Router } = require('express');
-const { UserService } = require('../core/user');
-const { transformErrors } = require('../utils/transformers');
-const { urlEncodedParser, emptyValueValidator } = require('./registration.middleware');
+const { urlEncodedParser } = require('./registration.middleware');
+const { registrationForm } = require('./registration.form');
+const { RegistrationService } = require('./registration.service');
 
 const RegistrationController = Router();
 
-RegistrationController.get('/', (req, res) => res.render(''));
+RegistrationController.get('/', (req, res) => res.render('registration', {
+  form: registrationForm,
+  values: {},
+  errors: {},
+}));
 
-RegistrationController.post('/', urlEncodedParser, emptyValueValidator, async (req, res) => {
+RegistrationController.post('/', urlEncodedParser, async (req, res) => {
   const { name, password, email, contactPhone } = req.body;
 
   try {
-    const result = await UserService.create({ name, password, email, contactPhone });
+    const result = await RegistrationService.register({ name, password, email, contactPhone });
 
-    return 'error' in result
-      ? res.status(422).json(transformErrors(result.error))
-      : res.json(result);
+    if ('error' in result) {
+      return res.status(422).render('registration', {
+        form: registrationForm,
+        values: { name, password, email, contactPhone },
+        errors: result.error,
+      });
+    }
+
+    return res.status(301).redirect('/login');
+
   } catch (error) {
-    throw new Error('[RegistrationController]. The error occured while creating new user.');
+    throw new Error(`[RegistrationController][post][/]. Error: ${error.message}.`);
   }
 });
 

@@ -1,4 +1,4 @@
-const { transformErrors } = require('./transformers');
+const { EmptyValueErrorSymbol } = require('./constants');
 
 const createEmptyValuesValidatorMiddleware = (schema) => (
   req,
@@ -8,7 +8,7 @@ const createEmptyValuesValidatorMiddleware = (schema) => (
   const { error } = schema.validate(req.body, { allowUnknown: true, abortEarly: false });
 
   if (error) {
-    return res.status(422).json(transformErrors(error));
+    req[EmptyValueErrorSymbol] = error;
   }
 
   next();

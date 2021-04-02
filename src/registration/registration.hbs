@@ -1,0 +1,16 @@
+<section>
+  <h1 class="is-size-1 has-text-centered mt-4"><strong>Welcome to Advertisment service</strong></h1>
+  <h2 class="is-size-2 has-text-centered mt-4">Please sign up</h2>
+  <div class="is-flex is-justify-content-center">
+    <div class="mt-6" style="width: 100%; max-width: 500px">
+      <form class="card p-6" method="POST" action="/signup">
+        {{#each form as |field|}}
+          {{> input field=field error=(lookup ../errors [name]) value=(lookup ../values [name])}}
+        {{/each}}
+        <div class="field mt-6 is-justify-content-center is-flex">
+          <button type="submit" class="button is-primary is-large">Sign up</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
