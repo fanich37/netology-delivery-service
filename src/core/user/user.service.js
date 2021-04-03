@@ -4,6 +4,13 @@ const { User, UserSchema } = require('./user.model');
 const userDb = new DB('user', UserSchema);
 
 class UserService {
+  static prepareUser(user) {
+    // eslint-disable-next-line no-unused-vars
+    const { passwordHash, ...rest } = user;
+
+    return rest;
+  }
+
   constructor(db) {
     this.db = db;
   }
@@ -12,10 +19,9 @@ class UserService {
     try {
       const user = new User({ email, passwordHash, name, contactPhone });
       const result = await this.db.create(user);
-      // eslint-disable-next-line no-unused-vars
-      const { passwordHash: hash, ...rest } = result;
+      const preparedResult = UserService.prepareUser(result);
 
-      return rest;
+      return preparedResult;
     } catch (error) {
       throw new Error(`[UserService][create]. Error: ${error.message}`);
     }

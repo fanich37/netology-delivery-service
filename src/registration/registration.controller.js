@@ -25,7 +25,7 @@ RegistrationController.post('/', urlEncodedParser, async (req, res) => {
       });
     }
 
-    return res.status(301).redirect('/login');
+    return res.redirect('/auth/login');
 
   } catch (error) {
     throw new Error(`[RegistrationController][post][/]. Error: ${error.message}.`);
