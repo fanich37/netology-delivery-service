@@ -23,17 +23,28 @@ class UserService {
 
       return preparedResult;
     } catch (error) {
-      throw new Error(`[UserService][create]. Error: ${error.message}`);
+      throw new Error(`[UserService][create]. Error: ${error.message}.`);
     }
   }
 
-  async findByEmail(email) {
+  async findUser(params) {
+    try {
+      const user = await this.db.findOneByParams(params);
+      const preparedResult = UserService.prepareUser(user);
+
+      return preparedResult;
+    } catch (error) {
+      throw new Error(`[UserService][findUser]. Error: ${error.message}.`);
+    }
+  }
+
+  async findUserByEmail(email) {
     try {
       const user = await this.db.findOneByParams({ email });
 
       return user;
     } catch (error) {
-      throw new Error(`[UserService][findByEmail]. Error: ${error.message}`);
+      throw new Error(`[UserService][findUserByEmail]. Error: ${error.message}.`);
     }
   }
 }
