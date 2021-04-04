@@ -25,7 +25,7 @@ class RegistrationService {
     }
 
     try {
-      const isUserAlreadyExist = await this.userService.findUserByEmail(email);
+      const isUserAlreadyExist = await this.userService.findByEmail(email);
 
       if (isUserAlreadyExist) {
         const generatedError = RegistrationService.generateUserExistsError(email);

@@ -55,7 +55,7 @@ class AuthService {
 
   async verify(email, password, done) {
     try {
-      const user = await this.userService.findUserByEmail(email);
+      const user = await this.userService.findByEmail(email);
 
       if (!user) {
         const generatedError = generateErrors([

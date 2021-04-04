@@ -1,0 +1,10 @@
+<div class="field">
+  <label class="label">{{label}}{{#if required}} *{{/if}}</label>
+  <div class="control">
+    <textarea name={{name}} class="textarea" placeholder="{{placeholder}}">{{value}}</textarea>
+  </div>
+
+  {{#if error}}
+  <p class="help is-danger">{{error}}</p>
+  {{/if}}
+</div>

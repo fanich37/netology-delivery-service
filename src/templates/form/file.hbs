@@ -1,0 +1,17 @@
+<div class="field">
+  <label class="label">{{label}}{{#if required}} *{{/if}}</label>
+  <div class="file is-boxed is-fullwidth">
+    <label class="file-label">
+      <input class="file-input" type="file" name="{{name}}" multiple>
+      <span class="file-cta">
+        <span class="file-label">
+          Choose images to upload...
+        </span>
+      </span>
+    </label>
+  </div>
+
+  {{#if error}}
+  <p class="help is-danger">{{error}}</p>
+  {{/if}}
+</div>
