@@ -10,9 +10,9 @@ class DB {
   }
 
   // eslint-disable-next-line no-unused-vars
-  constructor(entityName, entitySchema) {
+  constructor(entityName, entitySchema, mock) {
     this.entityName = entityName;
-    this.entities = [];
+    this.entities = mock || [];
   }
 
   async getAll() {
@@ -24,7 +24,7 @@ class DB {
   async findById(id) {
     await DB.delay();
 
-    return this.entities.find((entity) => entity.id === id);
+    return this.entities.find((entity) => entity._id === id);
   }
 
   async findOneByParams(params) {
@@ -48,7 +48,7 @@ class DB {
   async update(id, data) {
     await DB.delay();
 
-    const index = this.entities.findIndex((entity) => entity.id === id);
+    const index = this.entities.findIndex((entity) => entity._id === id);
     this.entities[index] = { ...this.entities[index], ...data };
 
     return this.entities[index];
@@ -57,7 +57,7 @@ class DB {
   async delete(id) {
     await DB.delay();
 
-    this.entities = this.entities.filter((entity) => entity.id !== id);
+    this.entities = this.entities.filter((entity) => entity._id !== id);
 
     return true;
   }

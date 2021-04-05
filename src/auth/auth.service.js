@@ -27,7 +27,7 @@ class AuthService {
     const [_id] = data.split('_');
 
     try {
-      const user = await this.userService.findUser({ _id });
+      const user = await this.userService.findUserById(_id);
 
       return done(null, user);
     } catch (error) {

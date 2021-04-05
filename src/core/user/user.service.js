@@ -1,13 +1,7 @@
 const { DB } = require('../../db');
 const { User, UserSchema } = require('./user.model');
 
-const userDb = new DB('user', UserSchema, [{
-  _id: 'd5ea3272-989f-4bb4-9cbd-446f1058ee79',
-  name: 'Mister Twister',
-  email: 'test@mail.ru',
-  passwordHash: '123123',
-  contactPhone: '+7 495 223 32 23',
-}]);
+const userDb = new DB('user', UserSchema);
 
 class UserService {
   static prepareUser(user) {
@@ -33,14 +27,14 @@ class UserService {
     }
   }
 
-  async findUser(params) {
+  async findUserById(id) {
     try {
-      const user = await this.db.findOneByParams(params);
+      const user = await this.db.findById(id);
       const preparedResult = UserService.prepareUser(user);
 
       return preparedResult;
     } catch (error) {
-      throw new Error(`[UserService][findUser]. Error: ${error.message}.`);
+      throw new Error(`[UserService][findUserById]. Error: ${error.message}.`);
     }
   }
 

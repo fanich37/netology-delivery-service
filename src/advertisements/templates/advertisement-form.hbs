@@ -1,0 +1,23 @@
+<section>
+  <h1 class="is-size-1 has-text-centered mt-4"><strong>Give new advertisement</strong></h1>
+  <div class="is-flex is-justify-content-center">
+    <div class="mt-6" style="width: 100%; max-width: 800px">
+      <form class="card p-6" method="POST" action="/create" enctype="multipart/form-data">
+        {{#each form as |field|}}
+          {{#if file}}
+          {{> file field=field error=(lookup ../errors [name]) value=(lookup ../values [name])}}
+          {{/if}}
+          {{#if textarea}}
+          {{> textarea field=field error=(lookup ../errors [name]) value=(lookup ../values [name])}}
+          {{/if}}
+          {{#if input}}
+          {{> input field=field error=(lookup ../errors [name]) value=(lookup ../values [name])}}
+          {{/if}}
+        {{/each}}
+        <div class="field mt-6 is-justify-content-center is-flex">
+          <button type="submit" class="button is-primary is-large">Create advertisement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+<section>
+  {{#with advertisement as |adv|}}
+  <h1 class="is-size-1 mt-4"><strong>{{adv.shortText}}</strong></h1>
+  <div class="tile is-ancestor mt-4">
+    <div class="tile is-vertical is-12">
+      <div class="tile">
+        <div class="tile is-parent is-vertical">
+          {{#each adv.images as |image|}}
+          <article class="tile is-child notification is-half">
+            <figure class="image is-4by5">
+              <img
+                src="/public/advertisements/{{image}}"
+                class="has-ratio"
+                alt="{{adv.shortText}}">
+            </figure>
+          </article>
+            {{/each}}
+        </div>
+        <div class="tile is-parent">
+          <article class="tile is-child notification">
+            <p class="subtitle"><b>Description:</b> {{adv.description}}</p>
+            <p class="subtitle"><b>Author:</b> {{adv.user.name}}</p>
+            <a href="mailto:{{adv.user.email}}"class="subtitle">Contact the author</a>
+          </article>
+        </div>
+      </div>
+      {{#if adv.isEditable}}
+      <div class="tile is-parent">
+        <article class="tile is-child notification">
+          <div class="columns">
+            <div class="column is-4">
+              <form action="/{{adv._id}}/delete" method="POST">
+                <button type="submit" class="button is-fullwidth is-danger">Close advertisement</button>
+              </form>
+            </div>
+          </div>
+        </article>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+  {{/with}}
+</section>

@@ -20,7 +20,10 @@ app.set('views', [
   path.join(__dirname, '..', 'templates'),
   path.join(__dirname, '..', 'registration'),
   path.join(__dirname, '..', 'auth'),
+  path.join(__dirname, '..', 'advertisements', 'templates'),
 ]);
+app.use('/public', express.static(path.join(__dirname, '..', 'public')));
+
 AuthService.init(app);
 
 exports.app = app;
