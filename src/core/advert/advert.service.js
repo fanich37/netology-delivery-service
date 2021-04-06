@@ -23,7 +23,7 @@ class AdvertService {
     try {
       const result = await this.db.getAll();
 
-      return result;
+      return result?.filter(({ isDeleted }) => !isDeleted);
     } catch (error) {
       throw new Error(`[AdvertService][getAllAdverts]. Error ${error.message}.`);
     }

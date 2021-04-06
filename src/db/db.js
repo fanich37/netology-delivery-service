@@ -1,65 +1,67 @@
+const { model, Schema } = require('mongoose');
+
 class DB {
-  static DELAY_TIME = 2000;
+  constructor(entityName, entitySchema) {
+    if (
+      (!entityName && typeof entityName !== 'string')
+      || (!entitySchema && typeof entitySchema !== 'object')
+    ) {
+      throw new Error('[DB][constructor]. Entity name and schema are required.');
+    }
 
-  static delay() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, Math.random() * DB.DELAY_TIME);
-    });
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  constructor(entityName, entitySchema, mock) {
-    this.entityName = entityName;
-    this.entities = mock || [];
+    this.entity = model(entityName, new Schema(entitySchema));
   }
 
   async getAll() {
-    await DB.delay();
+    try {
+      const result = await this.entity.find({}, '-__v').lean();
 
-    return this.entities;
+      return result;
+    } catch (error) {
+      throw new Error(`[DB][getAll]. Error: ${error.message}.`);
+    }
   }
 
   async findById(id) {
-    await DB.delay();
+    const { _doc } = await this.entity.findById(id, '-__v');
 
-    return this.entities.find((entity) => entity._id === id);
+    return _doc;
+  } catch(error) {
+    throw new Error(`[DB][getOneById]. Error: ${error.message}.`);
   }
 
   async findOneByParams(params) {
-    await DB.delay();
+    try {
+      const result = this.entity.findOne(params, '-__v');
 
-    return this.entities.find((entity) => {
-      const keys = Object.keys(params);
-
-      return keys.every((key) => params[key] === entity[key]);
-    });
+      return result;
+    } catch (error) {
+      throw new Error(`[DB][findOneByParams]. Error: ${error.message}.`);
+    }
   }
 
   async create(record) {
-    await DB.delay();
+    try {
+      const result = await this.entity.create(record);
 
-    this.entities.push(record);
-
-    return record;
-  }
-
-  async update(id, data) {
-    await DB.delay();
-
-    const index = this.entities.findIndex((entity) => entity._id === id);
-    this.entities[index] = { ...this.entities[index], ...data };
-
-    return this.entities[index];
+      return result;
+    } catch (error) {
+      throw new Error(`[DB][create]. Error: ${error.message}.`);
+    }
   }
 
   async delete(id) {
-    await DB.delay();
+    try {
+      await this.entity.findOneAndUpdate(
+        { _id: id },
+        { isDeleted: true, updatedAt: new Date().toISOString() },
+        { new: true, projection: '-__v' },
+      );
 
-    this.entities = this.entities.filter((entity) => entity._id !== id);
-
-    return true;
+      return true;
+    } catch (error) {
+      throw new Error(`[DB][delete]. Error: ${error.message}.`);
+    }
   }
 }
 
