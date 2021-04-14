@@ -38,6 +38,7 @@
     "nanoid": "^3.1.22",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "socket.io": "^4.0.1",
     "uuid": "^8.3.2"
   }
 }
