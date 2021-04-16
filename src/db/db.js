@@ -23,9 +23,9 @@ class DB {
   }
 
   async findById(id) {
-    const { _doc } = await this.entity.findById(id, '-__v');
+    const result = await this.entity.findById(id, '-__v').lean();
 
-    return _doc;
+    return result;
   } catch(error) {
     throw new Error(`[DB][getOneById]. Error: ${error.message}.`);
   }
