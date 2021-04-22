@@ -1,1 +1,4 @@
-To be filled later...
+Для запуска проекта:
+
+- создать файл `.env` согласно файлу `.env.example`;
+- выполнить команду `docker-compose up`;
