@@ -40,6 +40,19 @@ class DB {
     }
   }
 
+  async findAllByParams(params, populateWith = '') {
+    try {
+      const result = await this.entity
+        .find(params, '-__v')
+        .populate(populateWith)
+        .lean();
+
+      return result;
+    } catch (error) {
+      throw new Error(`[DB][findAllByParams]. Error: ${error.message}.`);
+    }
+  }
+
   async create(record) {
     try {
       const result = await this.entity.create(record);
@@ -50,9 +63,23 @@ class DB {
     }
   }
 
+  async update(id, params) {
+    try {
+      const result = await this.entity.update(
+        { _id: id },
+        params,
+        { new: true, projection: '-__v' },
+      );
+
+      return result;
+    } catch (error) {
+      throw new Error(`[DB][update]. Error: ${error.message}.`);
+    }
+  }
+
   async delete(id) {
     try {
-      await this.entity.findOneAndUpdate(
+      await this.entity.update(
         { _id: id },
         { isDeleted: true, updatedAt: new Date().toISOString() },
         { new: true, projection: '-__v' },

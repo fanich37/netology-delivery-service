@@ -4,13 +4,13 @@ try {
 } catch (error) { }
 
 const { initDb } = require('./db');
-const { app } = require('./app');
+const { server } = require('./app');
 
 const { PORT } = process.env;
 
 initDb()
   .then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`The app is running on port ${PORT}`);
     });
   })

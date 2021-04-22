@@ -1,0 +1,52 @@
+<section>
+  <h1 class="is-size-1 has-text-centered mt-4"><strong>Welcome back, {{user.name}}!</strong></h1>
+  <div class="columns mt-6">
+    <div class="column is-half">
+      <div class="card p-6">
+        <h2 class="is-size-3">Personal data</h2>
+        <p class="mt-2">Name: {{user.name}}</p>
+        <p>Email: {{user.email}}</p>
+        <p>Contact phone: {{user.contactPhone}}</p>
+      </div>
+    </div>
+    <div class="column is-half">
+      <div class="card p-6">
+        <h2 class="is-size-3">Messages</h2>
+        <ul class="chats mt-2">
+        {{#each chats as |chat|}}
+          <li>
+            <button
+              class="message message_full message_sent"
+              data-receiver-id="{{chat.user._id}}"
+              type="button">
+              Chat with {{chat.user.name}} ({{chat.user.email}})
+            </button>
+          </li>
+        {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+{{#if userId}}
+<script type="text/javascript">
+  const chats = document.getElementsByClassName('chats').item(0);
+  const userId = '{{userId}}';
+
+  chats.addEventListener('click', (event) => {
+    const chatButton = event.target.closest('button');
+
+    if (!chatButton) {
+      return;
+    }
+
+    const { receiverId } = chatButton.dataset || {};
+
+    if (!receiverId) {
+      return;
+    }
+
+    new Chat(userId, receiverId);
+  });
+</script>
+{{/if}}

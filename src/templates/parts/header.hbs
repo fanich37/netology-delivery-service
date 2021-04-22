@@ -10,17 +10,23 @@
         <a href="/create" class="button is-primary">
           <strong>Create advertisement</strong>
         </a>
-        <a href="/signup" class="button is-primary">
-          <strong>Sign up</strong>
-        </a>
-        <a href="/auth/login" class="button has-text-light has-background-primary-dark">
-          <strong>Log in</strong>
-        </a>
-        <form action="/auth/logout" method="POST">
-          <button type="submit" class="button has-text-light has-background-primary-dark">
-            <strong>Log out</strong>
-          </button>
-        </form>
+        {{#if userId}}
+          <a href="/user/{{userId}}" class="button is-primary">
+            <strong>Profile</strong>
+          </a>
+          <form action="/auth/logout" method="POST">
+            <button type="submit" class="button has-text-light has-background-primary-dark">
+              <strong>Log out</strong>
+            </button>
+          </form>
+        {{else}}
+          <a href="/signup" class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a href="/auth/login" class="button has-text-light has-background-primary-dark">
+            <strong>Log in</strong>
+          </a>
+        {{/if}}
       </div>
     </div>
   </nav>

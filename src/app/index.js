@@ -1,3 +1,3 @@
-const { app } = require('./routing');
+const { server } = require('./server');
 
-exports.app = app;
+exports.server = server;

@@ -7,10 +7,12 @@ const { restrictedRouteMiddleware } = require('../auth');
 const AdvertisementsController = Router();
 
 AdvertisementsController.get('/', async (req, res) => {
+  const { _id: userId } = req.user || {};
+
   try {
     const advertisements = await AdvertisementsService.getAllAdvertisements();
 
-    return res.render('advertisements', { advertisements });
+    return res.render('advertisements', { advertisements, userId });
   } catch (error) {
     throw new Error(`[AdvertisementsController][get][/]. Error: ${error.message}.`);
   }
@@ -19,11 +21,16 @@ AdvertisementsController.get('/', async (req, res) => {
 AdvertisementsController.get(
   '/create',
   restrictedRouteMiddleware,
-  (_, res) => res.render('advertisement-form', {
-    form: advertisementsForm,
-    values: {},
-    errors: {},
-  }));
+  (req, res) => {
+    const { _id: userId } = req.user || {};
+
+    res.render('advertisement-form', {
+      form: advertisementsForm,
+      values: {},
+      errors: {},
+      userId,
+    });
+  });
 
 AdvertisementsController.post(
   '/create',
@@ -48,6 +55,7 @@ AdvertisementsController.post(
           form: advertisementsForm,
           values: { shortText, description, userId, tags },
           errors: advertisement.error,
+          userId,
         });
       }
 
@@ -65,7 +73,7 @@ AdvertisementsController.get('/:id', async (req, res) => {
     const advertisement = await AdvertisementsService.getAdvertisementById(id, userId);
 
     return advertisement
-      ? res.render('advertisement-item', { advertisement })
+      ? res.render('advertisement-item', { advertisement, userId })
       : res.status(404).render('not-found');
   } catch (error) {
     throw new Error(`[AdvertisementsController][get][/:id]. Error: ${error.message}.`);
@@ -77,7 +85,7 @@ AdvertisementsController.post('/:id/delete', restrictedRouteMiddleware, async (r
   const { id } = req.params;
 
   try {
-    const result = await AdvertisementsService.delete(id, userId);
+    const result = await AdvertisementsService.deleteAdvertisement(id, userId);
     const pathToRedirect = result ? '/' : `/${id}`;
 
     res.redirect(pathToRedirect);

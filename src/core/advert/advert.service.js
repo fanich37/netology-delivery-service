@@ -41,7 +41,7 @@ class AdvertService {
 
   async remove(id) {
     try {
-      const result = this.db.delete(id);
+      const result = await this.db.delete(id);
 
       return result;
     } catch (error) {

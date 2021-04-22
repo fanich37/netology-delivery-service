@@ -1,35 +1,34 @@
 <section>
-  {{#with advertisement as |adv|}}
-  <h1 class="is-size-1 mt-4"><strong>{{adv.shortText}}</strong></h1>
+  <h1 class="is-size-1 mt-4"><strong>{{advertisement.shortText}}</strong></h1>
   <div class="tile is-ancestor mt-4">
     <div class="tile is-vertical is-12">
       <div class="tile">
         <div class="tile is-parent is-vertical">
-          {{#each adv.images as |image|}}
+          {{#each advertisement.images as |image|}}
           <article class="tile is-child notification is-half">
             <figure class="image is-4by5">
               <img
                 src="/public/advertisements/{{image}}"
                 class="has-ratio"
-                alt="{{adv.shortText}}">
+                alt="{{advertisement.shortText}}">
             </figure>
           </article>
             {{/each}}
         </div>
         <div class="tile is-parent">
           <article class="tile is-child notification">
-            <p class="subtitle"><b>Description:</b> {{adv.description}}</p>
-            <p class="subtitle"><b>Author:</b> {{adv.user.name}}</p>
-            <a href="mailto:{{adv.user.email}}"class="subtitle">Contact the author</a>
+            <p class="subtitle"><b>Description:</b> {{advertisement.description}}</p>
+            <p class="subtitle"><b>Author:</b> {{advertisement.user.name}}</p>
+            <a href="mailto:{{advertisement.user.email}}"class="subtitle">Email author</a>
           </article>
         </div>
       </div>
-      {{#if adv.isEditable}}
+      {{#if advertisement.isEditable}}
       <div class="tile is-parent">
         <article class="tile is-child notification">
           <div class="columns">
             <div class="column is-4">
-              <form action="/{{adv._id}}/delete" method="POST">
+              <form action="/{{advertisement._id}}/delete" method="POST">
                 <button type="submit" class="button is-fullwidth is-danger">Close advertisement</button>
               </form>
             </div>
@@ -39,5 +38,41 @@
       {{/if}}
     </div>
   </div>
-  {{/with}}
 </section>
+{{#if advertisement.isEditable}}
+{{else}}
+<section class="mt-5">
+  <div class="tile is-vertical is-12">
+    <div class="is-parent">
+      <article class="tile is-child notification">
+        <div class="columns">
+          <div class="column is-4">
+            {{#if userId}}
+            <button type="button" class="start-chat button is-fullwidth">Chat with author</button>
+            {{else}}
+            To contact the author please <a href="/auth/login">log in</a>
+            {{/if}}
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{{/if}}
+{{#if userId}}
+<script type="text/javascript">
+  const chatButton = document.getElementsByClassName('start-chat').item(0);
+  const receiverId= '{{advertisement.user._id}}';
+  const userId = '{{userId}}';
+
+  if (chatButton) {
+    chatButton.addEventListener('click', () => {
+      if (!receiverId) {
+        return;
+      }
+
+      new Chat(userId, receiverId);
+    });
+  }
+</script>
+{{/if}}

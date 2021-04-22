@@ -71,8 +71,8 @@ class AdvertisementsService {
     try {
       const advert = await this.advertService.getAdvertById(id);
 
-      if (userId !== advert._id) {
-        return null;
+      if (userId !== advert.userId) {
+        return false;
       }
 
       const result = await this.advertService.remove(id);
