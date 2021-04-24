@@ -5,13 +5,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
   <title>Advertisement Service</title>
   <link rel="stylesheet" href="/public/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="https://cdn.socket.io/4.0.0/socket.io.min.js" integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy" crossorigin="anonymous" defer></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="/public/js/script.js"></script>
   {{#if userId}}
-  <script>
-    window.addEventListener('load', () => {
-      initSocket('{{userId}}');
-    });
-  </script>
+  <script> window.addEventListener('load', initSocket);</script>
   {{/if}}
 </head>

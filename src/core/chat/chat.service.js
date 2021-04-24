@@ -14,7 +14,9 @@ class ChatService {
     this.db = db;
     this.userService = userService;
     this.sendMessage = this.sendMessage.bind(this);
+    this.notify = this.notify.bind(this);
     this.pool = new Map();
+    this.subscribers = new Set();
   }
 
   init(server) {
@@ -45,6 +47,31 @@ class ChatService {
     const socket = this.pool.get(socketId);
 
     socket.removeListener(chatId, this.sendMessage);
+  }
+
+  subscribe(chatIds) {
+    chatIds.forEach((chatId) => {
+      this.subscribers.add(chatId);
+    });
+
+    return chatIds;
+  }
+
+  unsubscribe(chatIds) {
+    chatIds.forEach((chatId) => {
+      this.subscribers.delete(chatId);
+    });
+
+    return chatIds;
+  }
+
+  notify({ chatId, text, socketId }) {
+    if (!this.subscribers.has(chatId)) {
+      return;
+    }
+
+    const socket = this.pool.get(socketId);
+    socket.broadcast.emit(`new-message-${chatId}`, { text });
   }
 
   async createChat(users) {
@@ -108,6 +135,8 @@ class ChatService {
       );
 
       await this.db.update(chatId, { $push: { messages: message } });
+
+      this.notify({ chatId, text, socketId });
 
       socket.broadcast.emit(chatId, message);
       socket.emit(chatId, message);

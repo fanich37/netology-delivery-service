@@ -30,4 +30,18 @@ ChatController.post('/close', jsonParser, async (req, res) => {
   }
 });
 
+ChatController.post('/subscribe', jsonParser, async (req, res) => {
+  const { chatIds } = req.body;
+  const result = ChatService.subscribe(chatIds);
+
+  return res.json({ chatIds: result || [] });
+});
+
+ChatController.post('/unsubscribe', jsonParser, async (req, res) => {
+  const { chatIds } = req.body;
+  const result = ChatService.unsubscribe(chatIds);
+
+  return res.json({ chatIds: result || [] });
+});
+
 exports.ChatController = ChatController;
